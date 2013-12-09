@@ -61,8 +61,12 @@ class Reservation {
     {
         $req = "select count(*) from reservations;";
         $res = $this->bdd->query($req) or die('erreur count');
-        while($donnee = $res->fetch())
-        return $donnee['count(*)'];
+        $nbreservation;
+        while($donnee = $res->fetch()){
+            $nbreservation = $donnee['count(*)'];
+        }
+        
+        return $nbreservation;
     }
 }
 
