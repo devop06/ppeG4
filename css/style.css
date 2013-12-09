@@ -10,7 +10,7 @@ body{
 	color : red;
 }
   
-  .menu,
+.menu,
 .menu ul,
 .menu li,
 .menu a {
@@ -28,7 +28,7 @@ ul.menu {
 /* Menu */
 .menu {
 	height: 40px;
-	width: 880px;
+	width: 60%;
 	
 	background: #4c4e5a;
 	
