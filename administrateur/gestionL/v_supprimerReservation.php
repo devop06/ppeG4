@@ -11,24 +11,34 @@
             <a href='.././index.php'>Accueil Administrateur</a><br/><br/><br/>
         </div>
         
-
-
-	<?php
-		require_once("../../conf/BDD_Connexion2.php");
-		// Récupération des événements
-		$req = "SELECT * FROM reservations";
-		$evenements = mysql_query($req);
-		
-		if(mysql_num_rows($evenements)) $nbEvents = true;
-		else $nbEvents = false;
-			
-		mysql_close();
-	?>
    
     <?php
-	if($nbEvents) {
-		
-		while($evenement = mysql_fetch_array($evenements)) {
+    include_once 'class/class_Reservation.php';
+    	
+            $reservationCount = new Reservation();
+            $nbreservation = $reservationCount->getNombreReservation(); // recupère le nombre total de réservation 
+            $nbPages = ceil($nbreservation / 5) ; // on met 5 réservation par page
+                if($nbreservation <= 5)
+                    $nbPages = 1;
+           
+                 if(!isset($_REQUEST['nbpages']))
+                    {
+                    $_REQUEST['nbpages'] = 1;
+                    }
+           $min = 0;
+           
+           
+           for($i = 1; $i<= $nbPages; $i++)  
+           {
+            
+                if($_REQUEST['nbpages'] == $i)
+                {
+                    
+                    $rep = $reservationCount->getLesReservations($min, 5); 
+                  
+        
+		while($evenement = $rep->fetch())
+                   {
                      $unEvenementId = $evenement['id_reservation'];
 			echo '
 			<table class="listeEvent" id="Evenement" >
@@ -38,13 +48,24 @@
 				<tr><td><a href="v_confirmationSuppression.php?confirmation=false&idE='.$unEvenementId.'">Supprimer</a></td></tr>
 			</table>
 			<br/><br/>
-			';
-		}
-		
-	}
-        else {
-                echo "<p>Aucune réservation à supprimer</p>";
-              }
+			';                 
+                    }
+                 
+                }
+               
+                $min += 5;
+                          
+                    
+                
+            }
+      
+           
+           
+           for ($i = 1; $i<=$nbPages;$i++) 
+                echo "<a href='v_supprimerReservation.php?nbpages=$i'>$i</a>";
+         
+           
+ 
 	?>
 
 
